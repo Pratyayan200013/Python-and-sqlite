@@ -77,7 +77,7 @@ class DatabaseManagement(object):
 def main():
     print("#"*40)
     print("\n")
-    print(":: Course Management ::")
+    print(":: Video Management ::")
     print("\n")
     print("#"*40)
     print("\n")
@@ -86,48 +86,52 @@ def main():
     print("2: To fetch all data from the database\n")
     print("3: To update data into the database\n")
     print("4: To delete data from the database\n")
-    choice = int(input("Enter a choice: "))
-    print("\n")
-    if choice == 1:
-        name = input("Enter the name: ")
-        description = input("Type a small description of the video: ")
-        tags = str(input("Enter the tags separated by spaces: ").split(" "))
-        is_private = int(input("Private-->0(False) or 1(True): "))
-        #data = [name, description, str_tags, is_private]
-        if db.insert_data(name, description, tags, is_private):
-            print("Inserted Successfuly")
+    print("5: To exit")
+    while True:
+        choice = int(input("Enter a choice: "))
+        print("\n")
+        if choice == 1:
+            name = input("Enter the name: ")
+            description = input("Type a small description of the video: ")
+            tags = str(input("Enter the tags separated by spaces: ").split(" "))
+            is_private = int(input("Private-->0(False) or 1(True): "))
+            #data = [name, description, str_tags, is_private]
+            if db.insert_data(name, description, tags, is_private):
+                print("Inserted Successfuly")
+            else:
+                print("Not inserted somethig went wrong")
+        elif choice == 2:
+            if db.fetch_data():
+                for val in db.fetch_data():
+                    print("Video id: ", val[0])
+                    print("name: ", val[1])
+                    print("description: ", val[2])
+                    print("tags: ", val[3])
+                    private = True if val[4] else False
+                    print("Private: ", private)
+                    print("\n")
+            else:
+                print("Can not fetch data something is wrong")
+        elif choice == 3:
+            id = int(input("Enter the video id which you want to update: "))
+            name = input("Enter the name: ")
+            description = input("Type a small description of the video: ")
+            tags = str(input("Enter the tags separated by spaces: ").split(" "))
+            is_private = int(input("Enter 0(False) or 1(True): "))
+            if db.update_data(name, description, tags, is_private, id):
+                print("Updated Successfuly")
+            else:
+                print("Update Failed")
+        elif choice == 4:
+            id = int(input("Enter the video id which you want to delete: "))
+            if db.delete_data(id):
+                print("Deleted Successfuly")
+            else:
+                print("Failed to delete")
+        elif choice==5:
+            break
         else:
-            print("Not inserted somethig went wrong")
-    elif choice == 2:
-        if db.fetch_data():
-            for val in db.fetch_data():
-                print("Video id: ", val[0])
-                print("name: ", val[1])
-                print("description: ", val[2])
-                print("tags: ", val[3])
-                private = True if val[4] else False
-                print("Private: ", private)
-                print("\n")
-        else:
-            print("Can not fetch data something is wrong")
-    elif choice == 3:
-        id = int(input("Enter the video id which you want to update: "))
-        name = input("Enter the name: ")
-        description = input("Type a small description of the video: ")
-        tags = str(input("Enter the tags separated by spaces: ").split(" "))
-        is_private = int(input("Enter 0(False) or 1(True): "))
-        if db.update_data(name, description, tags, is_private, id):
-            print("Updated Successfuly")
-        else:
-            print("Update Failed")
-    elif choice == 4:
-        id = int(input("Enter the video id which you want to delete: "))
-        if db.delete_data(id):
-            print("Deleted Successfuly")
-        else:
-            print("Failed to delete")
-    else:
-        print("Wrong Choice")
+            print("Wrong Choice")
 
 
 if __name__ == "__main__":
